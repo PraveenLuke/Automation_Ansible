@@ -1,0 +1,26 @@
+- name: Update ECS Service Desired Counts for All Clusters
+  hosts: localhost
+  tasks:
+    - name: Update desired count for ECS services using AWS CLI
+      command: >
+        aws ecs update-service
+        --cluster {{ item.cluster }}
+        --service {{ item.service }}
+        --desired-count {{ item.desired_count }}
+        --region eu-west-2
+      loop:
+        - { cluster: "DevBackendCluster", service: "DevNodeECSService", desired_count: 1 }
+        - { cluster: "DevBackendCluster", service: "DevNodeCronECSService", desired_count: 1 }
+        - { cluster: "DevBackendCluster", service: "DevDotnetECSService", desired_count: 1 }
+        - { cluster: "DevBackendCluster", service: "DevDotnetCronECSService", desired_count: 1 }
+        - { cluster: "QaBackendCluster", service: "QANodeECSService", desired_count: 1 }
+        - { cluster: "QaBackendCluster", service: "QADotnetECSService", desired_count: 1 }
+        - { cluster: "QaBackendCluster", service: "QANodeCronECSService", desired_count: 1 }
+        - { cluster: "QaBackendCluster", service: "QADotnetCronECSService", desired_count: 1 }
+        - { cluster: "MLEngineFargateCluster", service: "ml-exception-automation", desired_count: 1 }
+        - { cluster: "MLEngineFargateCluster", service: "MLEngineFargateServiceDev", desired_count: 1 }
+        - { cluster: "MLEngineFargateCluster", service: "MLEngineServiceINDDEV", desired_count: 1 }
+        - { cluster: "MLEngineFargateQACluster", service: "MLEngineFargateClusterQA", desired_count: 1 }
+        - { cluster: "MLEngineFargateQACluster", service: "MLEngineINDQAECSService", desired_count: 1 }
+        - { cluster: "MLCropQaDevCluster", service: "MLCropQaDevServicev1", desired_count: 1 }
+        - { cluster: "MLItemMatchDevQaCluster", service: "MLItemMatchDevQaService", desired_count: 1 }
